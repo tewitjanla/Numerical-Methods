@@ -126,6 +126,7 @@
         .settings-row {
             display: flex; justify-content: center; align-items: center; gap: 20px;
             margin-top: 25px; padding-top: 20px; border-top: 1px dashed var(--border); font-weight: 500;
+            flex-wrap: wrap;
         }
 
         .btn-start { 
@@ -137,112 +138,255 @@
         }
         .btn-start:hover { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
 
-        .step-box { 
-            display: none; background-color: var(--surface); 
-            border: 1px solid var(--border-light); border-left: 5px solid var(--primary); 
-            padding: 24px; margin-bottom: 24px; border-radius: var(--radius); 
-            box-shadow: var(--shadow-sm);
-        }
-        .step-title { font-weight: 700; font-size: 19px; margin-bottom: 15px; color: var(--primary); }
-        
-        .math { 
-            font-family: 'Fira Code', monospace; background: #f8fafc; 
-            padding: 16px 20px; border: 1px solid var(--border-light); 
-            border-radius: var(--radius); line-height: 1.8; font-size: 16px; 
-        }
-
-        .iteration-card { 
-            background: var(--surface); border: 1px solid var(--border-light); 
-            padding: 24px; border-radius: var(--radius); margin-bottom: 16px; 
+        /* สไตล์เลียนแบบเอกสาร/สไลด์อาจารย์ */
+        .slide-view {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px 35px;
+            margin-bottom: 30px;
             box-shadow: var(--shadow-md);
         }
-        .iteration-title { font-weight: 700; color: #d97706; margin-bottom: 12px; font-size: 18px; border-bottom: 1px solid var(--border-light); padding-bottom: 8px;}
-        .error-calc { margin-top: 16px; padding: 12px 16px; background-color: #f1f5f9; border-radius: 6px; font-weight: 600; color: var(--text-muted); font-size: 15px; border: 1px solid var(--border-light); }
-        .error-calc span.val { color: var(--danger); font-family: 'Fira Code', monospace; }
-        .error-success { color: var(--success) !important; }
 
-        /* กล่องสรุปคำตอบสุดท้าย */
-        .final-answer-box {
-            margin-top: 25px;
-            padding: 20px;
-            border-radius: var(--radius);
-            font-weight: 600;
+        .method-header {
+            font-weight: 700;
+            font-size: 20px;
+            text-decoration: underline;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        .slide-step-row {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            margin-bottom: 18px;
+            align-items: baseline;
+        }
+        @media (max-width: 600px) {
+            .slide-step-row { grid-template-columns: 1fr; gap: 5px; }
+        }
+
+        .slide-step-label {
+            font-weight: 700;
+            color: #000;
+            font-size: 17px;
+        }
+
+        .slide-step-content {
+            color: #000;
+            font-size: 17px;
+        }
+
+        .slide-math-block {
+            margin: 12px 0 20px 25px;
+            font-family: 'Sarabun', sans-serif;
             font-size: 18px;
-            display: none;
+            line-height: 2.1;
+            color: #000;
+        }
+
+        /* การจัดรูปแบบเลขยกกำลังและตัวห้อยแบบซ้อนกันเหมือนสมการจริง */
+        .math-var {
+            display: inline-flex;
+            align-items: center;
+            font-family: 'Sarabun', sans-serif;
+        }
+        .math-var .scripts {
+            display: inline-flex;
+            flex-direction: column;
+            font-size: 0.72em;
+            line-height: 1.05;
+            margin-left: 1px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .math-var .sup { order: 1; }
+        .math-var .sub { order: 2; }
+
+        /* การ์ดแสดงผลแต่ละรอบแบบสไลด์ */
+        .iteration-slide-item {
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--border);
+            animation: fadeIn 0.3s ease-out;
+        }
+        .iteration-bullet {
+            font-weight: 700;
+            font-size: 18px;
+            color: #000;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .iteration-bullet::before {
+            content: "●";
+            font-size: 16px;
+        }
+
+        .eq-line {
+            margin-left: 35px;
+            margin-bottom: 10px;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #000;
+        }
+        .eq-line-multiline {
+            margin-left: 35px;
+            margin-bottom: 14px;
+            font-size: 18px;
+            line-height: 1.7;
+            color: #000;
+        }
+        .eq-line-multiline .sub-line {
+            margin-left: 24px;
+        }
+
+        /* กล่องเศษส่วนค่าความคลาดเคลื่อนแบบในสไลด์ */
+        .eps-formula-container {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 18px 0 8px 35px;
+            font-size: 18px;
+            color: #000;
+        }
+        .abs-frac {
+            display: inline-flex;
+            align-items: stretch;
+            border-left: 1.8px solid #000;
+            border-right: 1.8px solid #000;
+            padding: 2px 8px;
+            margin: 0 4px;
+            vertical-align: middle;
+        }
+        .frac-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.3;
+        }
+        .frac-top {
+            border-bottom: 1.5px solid #000;
+            padding: 0 6px 3px 6px;
+            width: 100%;
             text-align: center;
+        }
+        .frac-bottom {
+            padding: 3px 6px 0 6px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* กล่องสรุปคำตอบสุดท้ายตามตำรา */
+        .textbook-summary-box {
+            margin-top: 30px;
+            padding: 25px 30px;
+            border-radius: var(--radius);
+            font-size: 17px;
+            line-height: 1.9;
+            display: none;
+            text-align: justify;
             box-shadow: var(--shadow-md);
             animation: fadeIn 0.5s ease-out;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
+            from { opacity: 0; transform: translateY(-8px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .answer-success {
-            background-color: #d1fae5;
-            color: #065f46;
-            border: 2px solid #34d399;
+        .summary-success {
+            background-color: #f8fafc;
+            color: #0f172a;
+            border: 1px solid #cbd5e1;
+            border-left: 6px solid var(--success);
         }
-        .answer-danger {
-            background-color: #fee2e2;
+        .summary-danger {
+            background-color: #fef2f2;
             color: #991b1b;
-            border: 2px solid #f87171;
+            border: 1px solid #fecaca;
+            border-left: 6px solid var(--danger);
         }
 
-        /* ปุ่มลอย */
+        /* ปุ่มลอยด้านล่าง */
         .floating-action-bar {
             position: fixed;
-            bottom: 30px;
+            bottom: 25px;
             left: 0;
             width: 100%;
             display: flex;
             justify-content: center;
+            gap: 12px;
             z-index: 1000;
             pointer-events: none; 
         }
         
-        .btn-next { 
+        .btn-next, .btn-auto { 
             pointer-events: auto; 
-            background-color: var(--text-main); 
             color: white; 
             border: none; 
-            padding: 16px 40px; 
-            font-size: 18px; 
+            padding: 14px 32px; 
+            font-size: 17px; 
             border-radius: 50px; 
             cursor: pointer; 
             font-family: inherit; 
             font-weight: 700; 
             box-shadow: var(--shadow-float);
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 2px solid rgba(255,255,255,0.1);
         }
-        .btn-next:hover { background-color: #334155; transform: translateY(-4px) scale(1.02); box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.3); }
-        .btn-next:active { transform: translateY(0); box-shadow: var(--shadow-md); }
-        .btn-next:disabled { background-color: var(--border); cursor: not-allowed; box-shadow: none; transform: none; color: #f8fafc; border: none;}
+        .btn-next { background-color: var(--text-main); }
+        .btn-auto { background-color: var(--primary); }
+        .btn-next:hover, .btn-auto:hover { transform: translateY(-3px) scale(1.02); }
+        .btn-next:disabled, .btn-auto:disabled { background-color: var(--border); cursor: not-allowed; box-shadow: none; transform: none; color: #f8fafc; }
 
-        .btn-success { background-color: var(--success) !important; box-shadow: 0 10px 25px rgba(5, 150, 105, 0.4) !important; }
-        .btn-danger { background-color: var(--danger) !important; box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4) !important; }
+        .btn-success { background-color: var(--success) !important; }
+        .btn-danger { background-color: var(--danger) !important; }
 
-        /* Table */
-        table { width: 100%; border-collapse: collapse; background-color: var(--surface); font-size: 15px; }
-        th, td { border: 1px solid var(--border-light); padding: 12px; text-align: center; }
-        th { background-color: #f8fafc; color: var(--text-main); font-weight: 700; text-transform: uppercase; font-size: 14px; }
-        tbody tr:nth-child(even) { background-color: #f8fafc; }
-        tbody tr:hover { background-color: #f1f5f9; }
-        td { font-family: 'Fira Code', monospace; }
-
+        /* ตารางเหมือนในสไลด์ */
+        .slide-table-title {
+            font-weight: 700;
+            font-size: 17px;
+            margin: 20px 0 12px 0;
+            color: #000;
+        }
+        table.slide-table { 
+            width: 100%; 
+            max-width: 760px;
+            margin: 0 auto;
+            border-collapse: collapse; 
+            background-color: #fff; 
+            font-size: 15px; 
+            border: 1.5px solid #000;
+        }
+        table.slide-table th, table.slide-table td { 
+            border: 1px solid #000; 
+            padding: 8px 12px; 
+            text-align: center; 
+            color: #000;
+        }
+        table.slide-table th { 
+            background-color: #f8fafc; 
+            font-weight: 700; 
+            font-size: 15px; 
+        }
+        table.slide-table td { 
+            font-family: 'Sarabun', sans-serif; 
+            font-size: 15px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>ระเบียบวิธีทำซ้ำแบบจาโคบี (Jacobi Method)</h2>
+    <h2>ระเบียบวิธีทำซ้ำแบบจาโคบี (Jacobi Iterative Method)</h2>
 
     <div class="comparison-banner">
         <div class="comparison-title">📋 โจทย์ตัวอย่างเปรียบเทียบจากสไลด์ของอาจารย์</div>
         <div class="comparison-grid">
             <div class="comparison-card">
                 <h4 style="color: var(--success);">🔹 ตัวอย่างที่ 3.5 (กรณีลู่เข้า / Convergence)</h4>
-                <div style="font-size: 14px; color: var(--text-muted); line-height: 1.5;">
+                <div style="font-size: 14px; color: var(--text-muted); line-height: 1.6;">
                     x₁ - 0.25x₂ - 0.25x₃ = 50<br>
                     -0.25x₁ + x₂ - 0.25x₄ = 50<br>
                     -0.25x₁ + x₃ - 0.25x₄ = 25<br>
@@ -251,10 +395,10 @@
             </div>
             <div class="comparison-card">
                 <h4 style="color: var(--danger);">🔸 ตัวอย่างที่ 3.4 (กรณีลู่ออก / Divergence)</h4>
-                <div style="font-size: 14px; color: var(--text-muted); line-height: 1.5;">
+                <div style="font-size: 14px; color: var(--text-muted); line-height: 1.6;">
                     2x₁ + 3x₂ - 2x₃ + 7x₄ = -11<br>
-                    5x₁ + 4x₃ = 37 (สลับแถวแล้ว)<br>
-                    2x₂ + 5x₃ - 4x₄ = 31<br>
+                    2x₂ + 5x₃ - 4x₄ = 31 (สลับแถวแล้ว)<br>
+                    5x₁ + 4x₃ = 37<br>
                     6x₁ + 2x₂ + 3x₃ + 5x₄ = 28
                 </div>
             </div>
@@ -263,8 +407,8 @@
 
     <div class="input-section">
         <div class="controls-top">
-            <button class="btn-load" onclick="loadExample(1)">โหลดโจทย์ข้อ 1 (ตัวอย่าง 3.5)</button>
-            <button class="btn-load" onclick="loadExample(2)">โหลดโจทย์ข้อ 2 (ตัวอย่าง 3.4)</button>
+            <button class="btn-load" onclick="loadExample(1)">โหลดตัวอย่างที่ 3.5 (ลู่เข้า)</button>
+            <button class="btn-load" onclick="loadExample(2)">โหลดตัวอย่างที่ 3.4 (ลู่ออก)</button>
             <button class="btn-load btn-clear" onclick="clearInputs()">ล้างข้อมูล</button>
         </div>
 
@@ -272,7 +416,7 @@
 
         <div class="settings-row">
             <div>
-                <label style="margin-right: 8px;">เกณฑ์คลาดเคลื่อน (ε):</label>
+                <label style="margin-right: 8px;">เกณฑ์ความคลาดเคลื่อน (ε):</label>
                 <input type="number" id="epsilonVal" class="input-box" value="0.0001" step="0.00001" style="width: 110px;">
             </div>
             <div style="color: var(--border);">|</div>
@@ -282,49 +426,78 @@
             </div>
         </div>
 
-        <button class="btn-start" onclick="initCalculation()">บันทึกสมการและเริ่มคำนวณ</button>
+        <button class="btn-start" onclick="initCalculation()">บันทึกสมการและเริ่มแสดงวิธีทำ</button>
     </div>
 
-    <div id="step1Box" class="step-box">
-        <div class="step-title">ขั้นตอนที่ 1: จัดรูประบบสมการให้เป็นแบบทำซ้ำ</div>
-        <div class="math" id="eqStep1"></div>
-    </div>
+    <!-- ส่วนแสดงวิธีทำเลียนแบบสไลด์ -->
+    <div id="solutionArea" class="slide-view" style="display: none;">
+        <div class="method-header">วิธีทำ</div>
 
-    <div id="step2Box" class="step-box">
-        <div class="step-title">ขั้นตอนที่ 2: การกำหนดค่าเริ่มต้นและเกณฑ์ค่าความคลาดเคลื่อน</div>
-        <div style="color: var(--text-muted); font-size: 17px;">
-            กำหนดค่าเริ่มต้น: <strong style="color: var(--text-main);">x<sub>1</sub><sup>0</sup> = 0, x<sub>2</sub><sup>0</sup> = 0, x<sub>3</sub><sup>0</sup> = 0, x<sub>4</sub><sup>0</sup> = 0</strong><br>
-            เกณฑ์ความคลาดเคลื่อน: <strong style="color: var(--text-main);">ε ≤ <span id="displayEpsilon"></span></strong><br>
-            จำกัดการทำซ้ำสูงสุด: <strong style="color: var(--text-main);"><span id="displayMaxIter"></span> รอบ</strong>
+        <!-- ขั้นตอนที่ 1 -->
+        <div class="slide-step-row">
+            <div class="slide-step-label">ขั้นตอนที่ 1</div>
+            <div class="slide-step-content">
+                <div>จัดรูประบบสมการให้เป็นแบบทำซ้ำ</div>
+                <div class="slide-math-block" id="eqStep1"></div>
+            </div>
         </div>
-    </div>
 
-    <div id="step3Box" style="display: none; margin-bottom: 20px;">
-        <div class="step-title" style="color: var(--primary); border-bottom: 2px solid var(--border-light); padding-bottom: 10px; font-size: 22px;">
-            ขั้นตอนที่ 3: การคำนวณทำซ้ำและตรวจสอบความคลาดเคลื่อน
+        <!-- ขั้นตอนที่ 2 -->
+        <div class="slide-step-row">
+            <div class="slide-step-label">ขั้นตอนที่ 2</div>
+            <div class="slide-step-content">
+                <div>การกำหนดค่าเริ่มต้นและเกณฑ์ค่าความคลาดเคลื่อน</div>
+                <div style="margin: 10px 0 20px 25px; font-size: 17px;">
+                    ค่าเริ่มต้นเลือกใช้ศูนย์ (0) ทั้งหมด &nbsp;
+                    <span class="math-var">x<span class="scripts"><span class="sup">0</span><span class="sub">i</span></span></span> = 0 (i = 1, 2, 3, 4) 
+                    &nbsp;และ&nbsp; ε ≤ <span id="displayEpsilon">0.0001</span>
+                </div>
+            </div>
         </div>
-        <div id="iterationsContainer" style="margin-top: 20px;"></div>
-    </div>
 
-    <!-- กล่องคำตอบสุดท้ายแบบในสไลด์ -->
-    <div id="finalAnswerBox" class="final-answer-box"></div>
+        <!-- ขั้นตอนที่ 3 -->
+        <div class="slide-step-row">
+            <div class="slide-step-label">ขั้นตอนที่ 3</div>
+            <div class="slide-step-content">
+                <div>การคำนวณทำซ้ำตรวจสอบความคลาดเคลื่อน</div>
+            </div>
+        </div>
+
+        <!-- รายละเอียดแต่ละรอบ (ครั้งที่ 1, 2, ...) -->
+        <div id="iterationsContainer" style="margin-left: 20px;"></div>
+
+        <!-- ส่วนตารางสรุปผลเหมือนสไลด์ -->
+        <div id="tableSection" style="display: none; margin-top: 30px;">
+            <div style="margin-left: 25px; font-size: 17px; margin-bottom: 10px;">
+                สรุปการคำนวณในการทำซ้ำครั้งถัดไป ดังตารางที่ 3.2
+            </div>
+            <div class="slide-table-title" id="tableTitleText">
+                ตารางที่ 3.2 ผลเฉลยของระเบียบวิธีการทำซ้ำแบบจาโคบี เพื่อหาคำตอบของระบบสมการ
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="slide-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 60px;">i</th>
+                            <th>x<sub>1</sub></th>
+                            <th>x<sub>2</sub></th>
+                            <th>x<sub>3</sub></th>
+                            <th>x<sub>4</sub></th>
+                            <th>ε<sub>con</sub></th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- กล่องข้อความสรุปท้ายตารางตามตำรา -->
+        <div id="finalAnswerBox" class="textbook-summary-box"></div>
+    </div>
 
     <div id="btnContainer" class="floating-action-bar" style="display: none;">
         <button id="calcBtn" class="btn-next" onclick="calculateNextStep()">▶ คำนวณครั้งที่ 1</button>
-    </div>
-
-    <div id="tableSection" class="step-box" style="display: none; padding: 0; border: none; margin-top: 40px; background: transparent; box-shadow: none;">
-        <div class="step-title" style="color: var(--text-main);">ตารางสรุปผลการทำซ้ำ</div>
-        <div style="overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); background: var(--surface);">
-            <table>
-                <thead>
-                    <tr>
-                        <th>รอบ (k)</th><th>x<sub>1</sub></th><th>x<sub>2</sub></th><th>x<sub>3</sub></th><th>x<sub>4</sub></th><th>ε<sub>con</sub> สูงสุด</th>
-                    </tr>
-                </thead>
-                <tbody id="resultTableBody"></tbody>
-            </table>
-        </div>
+        <button id="autoBtn" class="btn-auto" onclick="calculateAllSteps()">⚡ คำนวณรวดเดียวจบ</button>
     </div>
 </div>
 
@@ -337,6 +510,17 @@
     let maxIterations = 30;
     let isFinished = false;
 
+    // ฟังก์ชันสร้าง HTML ตัวแปร x ยกกำลังและห้อยท้ายแบบซ้อนกัน
+    function makeVarHtml(sub, sup) {
+        return `<span class="math-var">x<span class="scripts"><span class="sup">${sup}</span><span class="sub">${sub}</span></span></span>`;
+    }
+
+    // ฟังก์ชันจัดรูปแบบตัวเลขในวิธีทำ: แสดงทศนิยมไม่เกิน 2 ตำแหน่ง (ตัด .00 ออกหากเป็นจำนวนเต็ม เช่น 50, 68.75) เหมือนโจทย์ในสไลด์
+    function formatSlideNum(val) {
+        if (Math.abs(val) < 1e-12) return "0";
+        return Number(val.toFixed(2)).toString();
+    }
+
     function renderInputGrid() {
         const container = document.getElementById('matrixInputs');
         container.innerHTML = "";
@@ -344,9 +528,9 @@
             let rowHtml = `<div class="input-row">`;
             for (let j = 0; j < 4; j++) {
                 let sign = j > 0 ? `<span style="color: var(--text-muted); margin: 0 5px; font-weight: 500;">+</span>` : "";
-                rowHtml += `${sign}<input type="number" id="a_${i}_${j}" class="input-box" value="0"> <span class="var-text">x<sub>${j+1}</sub></span>`;
+                rowHtml += `${sign}<input type="number" id="a_${i}_${j}" class="input-box" value="0" step="0.01"> <span class="var-text">x<sub>${j+1}</sub></span>`;
             }
-            rowHtml += `<span style="color: var(--text-muted); margin: 0 10px; font-weight: 500;">=</span> <input type="number" id="c_${i}" class="input-box" value="0"></div>`;
+            rowHtml += `<span style="color: var(--text-muted); margin: 0 10px; font-weight: 500;">=</span> <input type="number" id="c_${i}" class="input-box" value="0" step="0.01"></div>`;
             container.innerHTML += rowHtml;
         }
     }
@@ -354,11 +538,21 @@
     function loadExample(type) {
         let exA, exC, exMax;
         if (type === 1) { 
-            exA = [[1, -0.25, -0.25, 0], [-0.25, 1, 0, -0.25], [-0.25, 0, 1, -0.25], [0, -0.25, -0.25, 1]];
+            exA = [
+                [1, -0.25, -0.25, 0],
+                [-0.25, 1, 0, -0.25],
+                [-0.25, 0, 1, -0.25],
+                [0, -0.25, -0.25, 1]
+            ];
             exC = [50, 50, 25, 25];
             exMax = 30; 
         } else { 
-            exA = [[2, 3, -2, 7], [0, 2, 5, -4], [5, 0, 4, 0], [6, 2, 3, 5]];
+            exA = [
+                [2, 3, -2, 7],
+                [0, 2, 5, -4],
+                [5, 0, 4, 0],
+                [6, 2, 3, 5]
+            ];
             exC = [-11, 31, 37, 28];
             exMax = 30; 
         }
@@ -380,40 +574,43 @@
         A = []; C = [];
         for (let i = 0; i < 4; i++) {
             let row = [];
-            for (let j = 0; j < 4; j++) row.push(parseFloat(document.getElementById(`a_${i}_${j}`).value));
+            for (let j = 0; j < 4; j++) {
+                row.push(parseFloat(document.getElementById(`a_${i}_${j}`).value) || 0);
+            }
             A.push(row);
-            C.push(parseFloat(document.getElementById(`c_${i}`).value));
+            C.push(parseFloat(document.getElementById(`c_${i}`).value) || 0);
             
             if (A[i][i] === 0) {
                 alert(`ข้อผิดพลาด: สัมประสิทธิ์หน้า x${i+1} ในสมการที่ ${i+1} เป็น 0 ทำให้หารไม่ได้ กรุณาสลับสมการก่อนคำนวณครับ`);
                 return;
             }
         }
-        epsilon = parseFloat(document.getElementById('epsilonVal').value);
-        maxIterations = parseInt(document.getElementById('maxIterVal').value);
+        epsilon = parseFloat(document.getElementById('epsilonVal').value) || 0.0001;
+        maxIterations = parseInt(document.getElementById('maxIterVal').value) || 30;
         
         document.getElementById('displayEpsilon').innerText = epsilon;
-        document.getElementById('displayMaxIter').innerText = maxIterations;
 
+        // สร้างสมการในขั้นตอนที่ 1 ให้ทศนิยมไม่เกิน 2 ตำแหน่งเหมือนในสไลด์
         let step1Html = "";
         for (let i = 0; i < 4; i++) {
             let terms = [];
             for (let j = 0; j < 4; j++) {
                 if (i !== j && A[i][j] !== 0) {
                     let coef = -A[i][j]; 
-                    let sign = coef > 0 ? "+" : "-";
-                    terms.push(`${sign} ${Math.abs(coef)}x<sub>${j+1}</sub><sup>k</sup>`);
+                    let sign = coef >= 0 ? "+" : "-";
+                    let absCoef = Math.abs(coef) === 1 ? "" : formatSlideNum(Math.abs(coef));
+                    terms.push(`${sign} ${absCoef}${makeVarHtml(j+1, 'k')}`);
                 }
             }
-            let eqString = `[ ${C[i]} ${terms.join(" ")} ]`;
-            if (A[i][i] !== 1) eqString += ` / ${A[i][i]}`;
-            step1Html += `x<sub>${i+1}</sub><sup>k+1</sup> = ${eqString}<br>`;
+            let rhs = `${formatSlideNum(C[i])} ${terms.join(" ")}`;
+            if (A[i][i] !== 1) {
+                rhs = `[ ${rhs} ] / ${formatSlideNum(A[i][i])}`;
+            }
+            step1Html += `${makeVarHtml(i+1, 'k+1')} = ${rhs} ,<br>`;
         }
         document.getElementById('eqStep1').innerHTML = step1Html;
 
-        document.getElementById('step1Box').style.display = "block";
-        document.getElementById('step2Box').style.display = "block";
-        document.getElementById('step3Box').style.display = "block";
+        document.getElementById('solutionArea').style.display = "block";
         document.getElementById('btnContainer').style.display = "flex";
         document.getElementById('tableSection').style.display = "block";
         document.getElementById('finalAnswerBox').style.display = "none";
@@ -422,155 +619,211 @@
         k = 1;
         isFinished = false;
         document.getElementById('iterationsContainer').innerHTML = "";
-        document.getElementById('resultTableBody').innerHTML = `<tr><td>0</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>-</td></tr>`;
+        document.getElementById('resultTableBody').innerHTML = `
+            <tr>
+                <td>0</td>
+                <td>0.0000</td>
+                <td>0.0000</td>
+                <td>0.0000</td>
+                <td>0.0000</td>
+                <td></td>
+            </tr>`;
         
         let btn = document.getElementById('calcBtn');
+        let autoBtn = document.getElementById('autoBtn');
         btn.disabled = false;
+        autoBtn.disabled = false;
         btn.innerText = "▶ คำนวณครั้งที่ 1";
         btn.className = "btn-next";
     }
 
-    // =========================================================================
-    // ฟังก์ชันคำนวณหลัก (อธิบายการวิ่งของ Loop แต่ละบรรทัด)
-    // =========================================================================
-    function calculateNextStep() {
+    function calculateNextStep(scroll = true) {
         if (isFinished) return;
 
         let currX = [0, 0, 0, 0];
         let stepHtmlDetails = "";
+        // แสดงบรรทัดเดียวในครั้งที่ 1 และแยก 2 บรรทัดอัตโนมัติตั้งแต่ครั้งที่ 2 เป็นต้นไปเหมือนในสไลด์
+        let useMultiline = (k >= 2);
 
         // ---------------------------------------------------------------------
-        // [ส่วนที่ 1] ลูปคำนวณหาตัวแปร x รอบใหม่ (x_i^(k+1)) ทีละตัว
+        // [ส่วนที่ 1] คำนวณหาตัวแปร x รอบใหม่ พร้อมประกอบสมการทศนิยม 2 ตำแหน่งแบบสไลด์
         // ---------------------------------------------------------------------
-        // 1. ลูปนอก (i) จะวิ่งทีละแถว (แถวที่ 0 ถึง 3) เพื่อหาค่า x1, x2, x3, x4 ตามลำดับ
-        for (let i = 0; i < 4; i++) { 
-            
-            // 2. ดึงค่าคงที่ (ฝั่งขวาของสมการ) ของแถวนั้นๆ มาตั้งรอไว้ก่อน (ตรงกับพจน์ c_i)
-            let sum = C[i]; 
-            let calcString = `${C[i]}`;
-            
-            // 3. ลูปใน (j) จะวิ่งไล่ดูสัมประสิทธิ์หน้า x ทุกตัวในแถวเดียวกัน (คอลัมน์ 0 ถึง 3)
-            for (let j = 0; j < 4; j++) { 
-                
-                // 4. เช็คว่า 'ต้องไม่ใช่ตัวแปรของตัวเอง' (i !== j) 
-                // เช่น ถ้าหา x1 (i=0) ก็ห้ามเอาสัมประสิทธิ์ของ x1 (j=0) มาลบ
-                if (i !== j) { 
-                    
-                    // 5. เอาสัมประสิทธิ์ตัวอื่น (a_ij) ไปคูณกับค่า x รอบที่แล้ว (prevX[j])
-                    // แล้วย้ายข้างสมการโดยนำมา 'ลบ' ออกจาก sum
-                    sum -= A[i][j] * prevX[j]; 
-                    
-                    // (ส่วนนี้แค่ประกอบข้อความ HTML เพื่อแสดงผลวิธีทำ ไม่เกี่ยวกับการคำนวณคณิตศาสตร์หลัก)
+        for (let i = 0; i < 4; i++) {
+            let sum = C[i];
+            let symbolicTerms = [];
+            let numericTerms = [];
+
+            for (let j = 0; j < 4; j++) {
+                if (i !== j) {
+                    sum -= A[i][j] * prevX[j];
+
                     if (A[i][j] !== 0) {
-                        let val = A[i][j];
-                        let sign = val > 0 ? "-" : "+";
-                        calcString += ` ${sign} ${Math.abs(val)}(${prevX[j].toFixed(4)})`;
+                        let coef = -A[i][j]; 
+                        let sign = coef >= 0 ? "+" : "-";
+                        let absCoefNum = Math.abs(coef);
+                        let absCoefStr = absCoefNum === 1 ? "" : formatSlideNum(absCoefNum);
+
+                        // พจน์ติดตัวแปร เช่น + 0.25x_2^0
+                        symbolicTerms.push(`${sign} ${absCoefStr}${makeVarHtml(j+1, k-1)}`);
+                        // พจน์แทนค่าในวงเล็บ ทศนิยมไม่เกิน 2 ตำแหน่ง เช่น + (0.25x50)
+                        numericTerms.push(`${sign} (${formatSlideNum(absCoefNum)}×${formatSlideNum(prevX[j])})`);
                     }
                 }
             }
-            
-            // 6. ดึงสัมประสิทธิ์ที่อยู่หน้าตัวแปรหลัก (เส้นทแยงมุม a_ii)
-            let diag = A[i][i]; 
-            
-            // 7. นำผลรวมที่ย้ายข้างเสร็จแล้ว (sum) มาหารด้วยสัมประสิทธิ์ตัวเอง (diag) จะได้ค่า x ตัวใหม่!
-            currX[i] = sum / diag; 
-            
-            // (ประกอบข้อความ HTML แสดงผลวิธีทำการหาร)
+
+            let diag = A[i][i];
+            currX[i] = sum / diag;
+
+            let symPart = `${formatSlideNum(C[i])} ${symbolicTerms.join(" ")}`;
+            let numPart = `${formatSlideNum(C[i])} ${numericTerms.join(" ")}`;
+
             if (diag !== 1) {
-                stepHtmlDetails += `x<sub>${i+1}</sub><sup>${k}</sup> = [ ${calcString} ] / ${diag} = <strong>${currX[i].toFixed(4)}</strong><br>`;
+                symPart = `[ ${symPart} ] / ${formatSlideNum(diag)}`;
+                numPart = `[ ${numPart} ] / ${formatSlideNum(diag)}`;
+            }
+
+            let finalValStr = formatSlideNum(currX[i]);
+
+            if (!useMultiline) {
+                // ครั้งที่ 1 แสดงบรรทัดเดียวรวดเหมือนสไลด์
+                stepHtmlDetails += `
+                    <div class="eq-line">
+                        ${makeVarHtml(i+1, k)} = ${symPart} = ${numPart} = <strong>${finalValStr}</strong>
+                    </div>`;
             } else {
-                stepHtmlDetails += `x<sub>${i+1}</sub><sup>${k}</sup> = ${calcString} = <strong>${currX[i].toFixed(4)}</strong><br>`;
+                // ตั้งแต่ครั้งที่ 2 แสดงแยก 2 บรรทัดเหมือนสไลด์
+                stepHtmlDetails += `
+                    <div class="eq-line-multiline">
+                        <div>${makeVarHtml(i+1, k)} = ${symPart}</div>
+                        <div class="sub-line">= ${numPart} = <strong>${finalValStr}</strong></div>
+                    </div>`;
             }
         }
 
         // ---------------------------------------------------------------------
-        // [ส่วนที่ 2] ลูปคำนวณหาค่าความคลาดเคลื่อน (Error)
+        // [ส่วนที่ 2] คำนวณหาค่าความคลาดเคลื่อนสัมพัทธ์สูงสุด (ε_con)
         // ---------------------------------------------------------------------
-        // 1. สร้างตัวแปร maxError มารอเก็บค่าความผิดพลาดที่สูงที่สุด เริ่มต้นเป็น 0
         let maxError = 0;
         let maxErrorIndex = 0;
-        
-        // 2. ลูปตรวจสอบ x ทั้ง 4 ตัว ว่าตัวไหนมี Error สูงที่สุด
-        for (let i = 0; i < 4; i++) { 
-            if (currX[i] !== 0) { // ป้องกันการเกิดบั๊กหารด้วย 0
-                
-                // 3. เข้าสูตร Error สัมพัทธ์: เอา | (ค่าใหม่ - ค่าเก่า) / ค่าใหม่ |
-                let err = Math.abs((currX[i] - prevX[i]) / currX[i]); 
-                
-                // 4. เช็คว่า Error ของ x ตัวนี้ มันมากกว่า maxError ที่เคยเจอมาหรือไม่?
-                if (err > maxError) { 
-                    // 5. ถ้ามากกว่า ให้จำค่า Error ตัวนี้ไว้เป็นแชมป์ (maxError) ตัวใหม่
-                    maxError = err; 
-                    maxErrorIndex = i; 
+
+        for (let i = 0; i < 4; i++) {
+            if (currX[i] !== 0) {
+                let err = Math.abs((currX[i] - prevX[i]) / currX[i]);
+                if (err > maxError) {
+                    maxError = err;
+                    maxErrorIndex = i;
                 }
             }
         }
 
         let meetsCriteria = (maxError <= epsilon);
-        let errorStatus = meetsCriteria ? `<span class="error-success">≤ ε (ลู่เข้าสู่คำตอบ)</span>` : `> ε (ต้องทำซ้ำ)`;
+        let compareSign = meetsCriteria ? `≤ ε` : `> ε`;
+        let formattedErr = Number.isInteger(maxError) ? maxError.toString() : formatSlideNum(maxError);
 
-        // (โค้ดสำหรับแสดงผลหน้าเว็บ ไม่ใช่ส่วนคำนวณ)
-        let iterationHtml = `
-            <div class="iteration-card">
-                <div class="iteration-title">รอบที่ ${k}</div>
-                <div class="math">${stepHtmlDetails}</div>
-                <div class="error-calc">
-                    ตรวจสอบความคลาดเคลื่อน (จาก x<sub>${maxErrorIndex + 1}</sub>): <br>
-                    <span style="font-weight: 500;">ε<sub>con</sub> = |(${currX[maxErrorIndex].toFixed(4)} - ${prevX[maxErrorIndex].toFixed(4)}) / ${currX[maxErrorIndex].toFixed(4)}| = <span class="val">${maxError.toFixed(6)}</span> ${errorStatus}</span>
+        let xNewStr = formatSlideNum(currX[maxErrorIndex]);
+        let xOldStr = formatSlideNum(prevX[maxErrorIndex]);
+        let varIdx = maxErrorIndex + 1;
+
+        // สมการเศษส่วนค่าสัมบูรณ์
+        let errorHtml = `
+            <div class="eps-formula-container">
+                <span>ε<sub>con</sub> =</span>
+                <div class="abs-frac">
+                    <div class="frac-inner">
+                        <div class="frac-top">${makeVarHtml(varIdx, k)} − ${makeVarHtml(varIdx, k-1)}</div>
+                        <div class="frac-bottom">${makeVarHtml(varIdx, k)}</div>
+                    </div>
                 </div>
+                <span>=</span>
+                <div class="abs-frac">
+                    <div class="frac-inner">
+                        <div class="frac-top">${xNewStr} − ${xOldStr}</div>
+                        <div class="frac-bottom">${xNewStr}</div>
+                    </div>
+                </div>
+                <span>= <strong>${formattedErr}</strong> ${compareSign}</span>
+            </div>
+        `;
+
+        let iterationHtml = `
+            <div class="iteration-slide-item">
+                <div class="iteration-bullet">ครั้งที่ ${k}</div>
+                ${stepHtmlDetails}
+                ${errorHtml}
             </div>`;
         document.getElementById('iterationsContainer').insertAdjacentHTML('beforeend', iterationHtml);
         
+        // เพิ่มแถวในตารางที่ 3.2 (ในตารางยังคงแสดง 4 ตำแหน่งและ 6 ตำแหน่งเหมือนสไลด์หน้า 2)
         document.getElementById('resultTableBody').insertAdjacentHTML('beforeend', `
             <tr>
                 <td>${k}</td>
-                <td>${currX[0].toFixed(4)}</td><td>${currX[1].toFixed(4)}</td>
-                <td>${currX[2].toFixed(4)}</td><td>${currX[3].toFixed(4)}</td>
+                <td>${currX[0].toFixed(4)}</td>
+                <td>${currX[1].toFixed(4)}</td>
+                <td>${currX[2].toFixed(4)}</td>
+                <td>${currX[3].toFixed(4)}</td>
                 <td>${maxError.toFixed(6)}</td>
             </tr>`);
 
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        if (scroll) {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
         
-        // 6. เมื่อแสดงผลจบ เอาค่า x ในรอบนี้ (currX) ไปเก็บไว้เป็นค่าเก่า (prevX) เพื่อเตรียมใช้ในรอบหน้า
         prevX = [...currX]; 
         
         let btn = document.getElementById('calcBtn');
+        let autoBtn = document.getElementById('autoBtn');
         let answerBox = document.getElementById('finalAnswerBox');
+        let tableTitle = document.getElementById('tableTitleText');
         
         // ---------------------------------------------------------------------
-        // [ส่วนที่ 3] ตรวจสอบเงื่อนไขตัดจบการทำงาน
+        // [ส่วนที่ 3] ตรวจสอบเงื่อนไขจบการทำงาน และสร้างบทสรุปตามตำรา
         // ---------------------------------------------------------------------
-        // 1. เช็คว่า maxError ต่ำกว่าหรือเท่ากับ 0.0001 (epsilon) หรือยัง?
         if (meetsCriteria) {
-            // ถ้าเป็นจริง -> แปลว่าลู่เข้าสู่คำตอบ (Convergence) ให้ล็อคปุ่มแล้วจบการทำงาน
             isFinished = true;
             btn.innerText = "🎉 ลู่เข้าสู่คำตอบสำเร็จ!";
             btn.disabled = true;
+            autoBtn.disabled = true;
             btn.className = "btn-next btn-success";
             
-            answerBox.innerHTML = `ตอบ คำตอบจากการใช้ระเบียบวิธีการทำซ้ำแบบจาโคบี (Jacobi iterative method) ของระบบสมการนี้ คือ<br> x<sub>1</sub> = ${currX[0].toFixed(4)}, x<sub>2</sub> = ${currX[1].toFixed(4)}, x<sub>3</sub> = ${currX[2].toFixed(4)} และ x<sub>4</sub> = ${currX[3].toFixed(4)}`;
-            answerBox.className = "final-answer-box answer-success";
+            tableTitle.innerText = "ตารางที่ 3.2 ผลเฉลยของระเบียบวิธีการทำซ้ำแบบจาโคบี เพื่อหาคำตอบของระบบสมการ กรณีลู่เข้าสู่คำตอบ (Convergence)";
+
+            answerBox.innerHTML = `
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;จากผลการคำนวณพบว่าค่า x<sub>i</sub> (i = 1, 2, 3, 4) เกิดการลู่เข้าสู่คำตอบได้ 
+                ดังนั้นระเบียบวิธีการทำซ้ำแบบจาโคบีสามารถใช้ในการแก้ปัญหาของระบบสมการที่โจทย์กำหนดให้ได้ 
+                คำตอบที่ได้เกิดจากการทำซ้ำ <strong>${k} ครั้ง</strong> เนื่องจาก <strong>ε<sub>con</sub> = ${maxError.toFixed(6)} &lt; ε</strong> 
+                โดยมีค่าผลเฉลยต่าง ๆ ประกอบไปด้วย 
+                <strong>x<sub>1</sub> = ${currX[0].toFixed(4)}, x<sub>2</sub> = ${currX[1].toFixed(4)}, x<sub>3</sub> = ${currX[2].toFixed(4)} และ x<sub>4</sub> = ${currX[3].toFixed(4)}</strong>
+            `;
+            answerBox.className = "textbook-summary-box summary-success";
             answerBox.style.display = "block";
             
-        } 
-        // 2. ถ้าไม่ผ่านเงื่อนไขแรก ให้เช็คต่อว่าทำซ้ำมาถึง 30 รอบ (maxIterations) แล้วหรือยัง?
-        else if (k >= maxIterations) { 
-            // ถ้าทำครบโควต้าแล้วยัง Error ไม่ลด -> แปลว่าลู่ออก (Divergence) ให้ล็อคปุ่มแล้วตัดจบเลย
+        } else if (k >= maxIterations) { 
             isFinished = true;
             btn.innerText = "🛑 หยุดคำนวณ (ระบบลู่ออก)";
             btn.disabled = true;
+            autoBtn.disabled = true;
             btn.className = "btn-next btn-danger";
+
+            tableTitle.innerText = "ตารางที่ 3.2 ผลเฉลยของระเบียบวิธีการทำซ้ำแบบจาโคบี เพื่อหาคำตอบของระบบสมการ กรณีลู่ออก (Divergence)";
             
-            answerBox.innerHTML = `ตอบ ไม่สามารถหาคำตอบของระบบสมการนี้จากการใช้ระเบียบวิธีการทำซ้ำแบบจาโคบี (Jacobi iterative method) ได้ เนื่องจากระบบลู่ออก (Divergence)`;
-            answerBox.className = "final-answer-box answer-danger";
+            answerBox.innerHTML = `
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;จากผลการคำนวณทำซ้ำถึงครั้งที่ ${k} พบว่าค่าความคลาดเคลื่อน <strong>ε<sub>con</sub> = ${maxError.toFixed(6)} &gt; ε</strong> 
+                และมีแนวโน้มเพิ่มขึ้นอย่างต่อเนื่อง ไม่สามารถหาคำตอบของระบบสมการนี้จากการใช้ระเบียบวิธีการทำซ้ำแบบจาโคบี (Jacobi iterative method) ได้ 
+                <strong>เนื่องจากระบบลู่ออก (Divergence)</strong>
+            `;
+            answerBox.className = "textbook-summary-box summary-danger";
             answerBox.style.display = "block";
-        } 
-        // 3. ถ้า Error ยังเกินเกณฑ์ และจำนวนรอบยังไม่เกินโควต้า
-        else {
-            // สั่งบวกตัวนับรอบ (k) ขึ้นอีก 1 แล้วรอผู้ใช้กดปุ่มเพื่อเริ่มคำนวณในรอบถัดไป
+        } else {
             k++; 
             btn.innerText = `▶ คำนวณครั้งที่ ${k}`;
         }
+    }
+
+    function calculateAllSteps() {
+        while (!isFinished) {
+            calculateNextStep(false);
+        }
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 
     window.onload = () => {
